@@ -57,7 +57,7 @@ func UploadDatabases(c *gin.Context) {
 	}
 
 	if level == -1 || level > 1 {
-		panic("无法识别数据库")
+		panic("Unable to recognize the database")
 	}
 
 	databasePath := path.Join(settingPath.CodeQLDatabase, file.Filename[:len(file.Filename)-len(filepath.Ext(file.Filename))])
@@ -92,7 +92,7 @@ func DeleteDatabases(c *gin.Context) {
 		panic(err.Error())
 	}
 	if filepath.Dir(databasePath) != settingPath.CodeQLDatabase {
-		panic("文件名错误")
+		panic("Wrong file name")
 	}
 
 	err = os.RemoveAll(databasePath)

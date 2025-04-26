@@ -17,7 +17,7 @@
         />
       </template>
     </el-table-column>
-    <el-table-column prop="ProjectName" label="项目名" sortable="custom">
+    <el-table-column prop="ProjectName" label="Project name" sortable="custom">
       <template #default="scope">
         <el-link
             v-if="scope.row.ProjectOwner && scope.row.ProjectRepo"
@@ -29,9 +29,9 @@
         </span>
       </template>
     </el-table-column>
-    <el-table-column prop="ProjectLanguage" label="语言" sortable="custom"/>
-    <el-table-column prop="ProjectMode" :formatter="modeFormatter" label="扫描对象" sortable="custom"/>
-    <el-table-column prop="Versions" label="扫描版本" width="100px">
+    <el-table-column prop="ProjectLanguage" label="Project language" sortable="custom"/>
+    <el-table-column prop="ProjectMode" :formatter="modeFormatter" label="Scan object" sortable="custom"/>
+    <el-table-column prop="Versions" label="Scanned version" width="100px">
       <template #default="scope">
         <el-tag v-for="(item, index) in scope.row.Versions"
                 :key="index"
@@ -41,7 +41,7 @@
         </el-tag>
       </template>
     </el-table-column>
-    <el-table-column prop="ProjectSuite" label="查询套件" width="100px">
+    <el-table-column prop="ProjectSuite" label="Query kit" width="100px">
       <template #default="scope">
         <el-tag v-for="(item, index) in scope.row.ProjectSuite"
                 :key="index"
@@ -52,23 +52,23 @@
       </template>
     </el-table-column>
 
-    <el-table-column prop="Stage" label="任务阶段" sortable="custom">
+    <el-table-column prop="Stage" label="Task stage" sortable="custom">
       <template #default="scope">
         <el-icon :size="20" style="margin-top: 8px" v-if="scope.row.Stage === 0">
           <Loading />
         </el-icon>
         <el-icon  :size="20" style="margin-top: 8px" v-if="scope.row.Stage === 1">
-          <el-tooltip content="资源下载" placement="top" :hide-after="10">
+          <el-tooltip content="Resource download" placement="top" :hide-after="10">
             <Download />
           </el-tooltip>
         </el-icon>
         <el-icon :size="20" style="margin-top: 8px" v-if="scope.row.Stage === 2">
-          <el-tooltip content="数据库构建" placement="top" :hide-after="10">
+          <el-tooltip content="Database construction" placement="top" :hide-after="10">
             <Setting />
           </el-tooltip>
         </el-icon>
         <el-icon :size="20" style="margin-top: 8px" v-if="scope.row.Stage === 3">
-          <el-tooltip content="数据库分析" placement="top" :hide-after="10">
+          <el-tooltip content="Database analysis" placement="top" :hide-after="10">
            <Search />
           </el-tooltip>
         </el-icon>
@@ -76,20 +76,20 @@
       </template>
     </el-table-column>
 
-    <el-table-column prop="Status" label="任务状态" sortable="custom"
+    <el-table-column prop="Status" label="Task status" sortable="custom"
                      column-key="Status"
                      :filters="[
-                      { text: '队列中', value: 0 },
-                      { text: '执行中', value: 1 },
-                      { text: '执行完成', value: 2 },
-                      { text: '执行失败', value: -1 },
+                      { text: 'In the queue', value: 0 },
+                      { text: 'In execution', value: 1 },
+                      { text: 'Execution completed', value: 2 },
+                      { text: 'Execution failed', value: -1 },
                     ]"
                      :filtered-value="filters.status"
     >
       <template #default="scope">
         <el-tooltip
             v-if="scope.row.Status ===0"
-            content="队列中"
+            content="In the queue"
             placement="top"
             :hide-after="10"
         >
@@ -100,7 +100,7 @@
         </el-tooltip>
         <el-tooltip
             v-if="scope.row.Status ===1"
-            content="执行中"
+            content="In execution"
             placement="top"
             :hide-after="10"
         >
@@ -109,7 +109,7 @@
         </el-tooltip>
         <el-tooltip
             v-if="scope.row.Status ===2"
-            content="执行完成"
+            content="Execution completed"
             placement="top"
             :hide-after="10"
         >
@@ -118,7 +118,7 @@
         </el-tooltip>
         <el-tooltip
             v-if="scope.row.Status ===-1"
-            content="执行失败"
+            content="Execution failed"
             placement="top"
             :hide-after="10"
         >
@@ -128,18 +128,18 @@
       </template>
     </el-table-column>
 
-    <el-table-column prop="TotalResultsCount" label="结果数量" sortable="custom"/>
-    <el-table-column prop="CreatedAt" label="创建时间" sortable="custom"
+    <el-table-column prop="TotalResultsCount" label="Number of results" sortable="custom"/>
+    <el-table-column prop="CreatedAt" label="Creation time" sortable="custom"
                      :formatter="(row, col, value, index)=>timeFormatter(value)"/>
 
     <el-table-column
         width="66px"
-        label="查阅"
+        label="Check out"
         prop="IsRead"
         column-key="IsRead"
         :filters="[
-          { text: '已读', value: true },
-          { text: '未读', value: false },
+          { text: 'Read', value: true },
+          { text: 'Unread', value: false },
         ]"
         :filtered-value="filters.is_read">
       <template #default="scope">
@@ -154,7 +154,7 @@
     <el-table-column fixed="right" label="" width="106px">
       <template #header>
         <el-tooltip
-            content="全部已读"
+            content="All read"
             placement="left-start"
             :hide-after="10"
         >
@@ -166,15 +166,15 @@
             <el-button style="float: right;" :icon="Plus" circle/>
           </template>
           <el-row>
-            <el-col :span="12"><el-button @click="showDialogForm">从已有数据库创建</el-button></el-col>
-            <el-col :span="12"><el-button @click="showGithubBatchTasksDialogForm">从GitHub批量创建</el-button></el-col>
+            <el-col :span="12"><el-button @click="showDialogForm">Create from an existing database</el-button></el-col>
+            <el-col :span="12"><el-button @click="showGithubBatchTasksDialogForm">Batch creation from GitHub</el-button></el-col>
           </el-row>
         </el-popover>
       </template>
       <template #default="scope">
         <el-tooltip
             v-if="scope.row.IsRead"
-            content="标记为未读"
+            content="Marked as unread"
             placement="left-start"
             :hide-after="10"
         >
@@ -182,7 +182,7 @@
         </el-tooltip>
         <el-tooltip
             v-if="!scope.row.IsRead"
-            content="标记为已读"
+            content="Marked as read"
             placement="left-start"
             :hide-after="10"
         >
@@ -203,9 +203,9 @@
       @current-change="fetchData"
   />
 
-  <el-dialog v-model="dialogFormVisible" title="新建任务">
+  <el-dialog v-model="dialogFormVisible" title="New task">
     <el-form :model="form" label-width="68px">
-      <el-form-item label="数据库">
+      <el-form-item label="Database">
         <el-select v-model="form.database"
                    filterable
                    placeholder="Select" style="width:100%">
@@ -215,7 +215,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="查询套件">
+      <el-form-item label="Query kit">
         <el-select v-model="form.suites" multiple
                    filterable
                    clearable
@@ -228,7 +228,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="项目名称">
+      <el-form-item label="Project name">
         <el-input v-model="form.name" autocomplete="off" :placeholder="form.database"/>
       </el-form-item>
     </el-form>
@@ -243,18 +243,18 @@
   </el-dialog>
 
 
-  <el-dialog v-model="githubBatchTasksDialogFormVisible" title="新建任务">
+  <el-dialog v-model="githubBatchTasksDialogFormVisible" title="New task">
     <el-form v-loading="githubBatchTasksDialogForm.loading" :model="githubBatchTasksDialogForm" label-width="68px">
-      <el-form-item label="搜索语句">
+      <el-form-item label="Search statement">
         <el-input v-model="githubBatchTasksDialogForm.query" autocomplete="off" @change="githubBatchTasksDialogFormQueryChange">
           <template #append >{{githubBatchTasksDialogForm.totalLoading?"...":githubBatchTasksDialogForm.total}}</template>
         </el-input>
       </el-form-item>
 
-      <el-form-item label="扫描范围">
+      <el-form-item label="Scanning range">
         <el-row :gutter="10">
           <el-col :span="6">
-            <el-tooltip content="排序" placement="top" :hide-after="10">
+            <el-tooltip content="Sort" placement="top" :hide-after="10">
               <el-select v-model="githubBatchTasksDialogForm.sort" placeholder="sort" style="width:100%">
                 <el-option
                     v-for="item in ['stars', 'forks', 'help-wanted-issues', 'updated']"
@@ -272,19 +272,19 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <el-tooltip content="扫描数量" placement="top" :hide-after="10">
+            <el-tooltip content="Number of scans" placement="top" :hide-after="10">
               <el-input-number v-model="githubBatchTasksDialogForm.number" :min="0" :max="githubBatchTasksDialogForm.total - githubBatchTasksDialogForm.offset" style="width:100%"/>
             </el-tooltip>
           </el-col>
           <el-col :span="6">
-            <el-tooltip content="偏移" placement="top" :hide-after="10">
+            <el-tooltip content="Offset" placement="top" :hide-after="10">
               <el-input-number v-model="githubBatchTasksDialogForm.offset" :min="0" :max="githubBatchTasksDialogForm.total" @change="githubBatchTasksDialogFormOffsetChange" style="width:100%"/>
             </el-tooltip>
           </el-col>
         </el-row>
       </el-form-item>
 
-      <el-form-item label="项目语言">
+      <el-form-item label="Project language">
         <el-select v-model="githubBatchTasksDialogForm.language" filterable allow-create placeholder="Select" style="width:100%"
                    @change="githubBatchTasksDialogFormLanguageChange">
           <el-option
@@ -294,7 +294,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="查询套件">
+      <el-form-item label="Query kit">
         <el-select v-model="githubBatchTasksDialogForm.suites" multiple
                    filterable
                    clearable
@@ -371,9 +371,9 @@ const newTask = () => {
     dialogFormVisible.value = false;
 
     if (response.data.success) {
-      ElMessage.success("新建成功")
+      ElMessage.success("Newly created successfully")
     } else {
-      ElMessage.info("任务已在进行或队列中")
+      ElMessage.info("The task is already in progress or in the queue")
     }
 
     emit("refresh")
@@ -471,7 +471,7 @@ const newGithubBatchTasks = () => {
     fetchData();
     githubBatchTasksDialogFormVisible.value = false;
     if (response.data.success) {
-          ElMessage.success("新建成功")
+          ElMessage.success("Newly created successfully")
         }
     emit("refresh")
   }).finally(()=>{
@@ -528,13 +528,13 @@ const modeFormatter = (row, col, value, index) => {
   if (value === 0) {
     return "Release";
   } else if (value === 1) {
-    return "原有数据库";
+    return "Original database";
   }else if (value === 2) {
-    return "自定义数据库";
+    return "Custom database";
   }else if (value === 3) {
-    return "默认分支";
+    return "Default branch";
   }else if (value === 4) {
-    return "自动选择";
+    return "Automatic selection";
   }
   return value;
 }

@@ -134,7 +134,7 @@ func SaveProject(c *gin.Context) {
 	urlReg := regexp.MustCompile("^https://github\\.com/([^/]+)/([^/]+)$")
 	matches := urlReg.FindStringSubmatch(project.Url)
 	if len(matches) != 3 {
-		panic(fmt.Sprintf("请填写正确项目地址: %s", urlReg))
+		panic(fmt.Sprintf("Please fill in the correct project address: %s", urlReg))
 	}
 	owner := matches[1] // 提取 owner 字段
 	repo := matches[2]  // 提取 repo 字段
@@ -143,11 +143,11 @@ func SaveProject(c *gin.Context) {
 
 	langReg := regexp.MustCompile("^[a-zA-Z]+$")
 	if !langReg.MatchString(project.Language) {
-		panic(fmt.Sprintf("请填写正确项目语言: %s", langReg))
+		panic(fmt.Sprintf("Please fill in the correct project language: %s", langReg))
 	}
 
 	if len(project.Suite) == 0 {
-		panic(fmt.Sprintf("请选择查询套件"))
+		panic(fmt.Sprintf("Please select the query kit"))
 	}
 
 	var result *gorm.DB

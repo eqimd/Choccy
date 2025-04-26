@@ -169,15 +169,15 @@ func DownloadGithubDatabase(databaseUrl, databaseName string) (string, error) {
 	databasePath := filepath.Join(settingPath.CodeQLDatabase, databaseName)
 	_, err = os.Stat(databasePath)
 	if err == nil {
-		return "", fmt.Errorf("数据库目录已存在：" + databasePath)
+		return "", fmt.Errorf("The database directory already exists: " + databasePath)
 	}
 	err = Unzip(downloadPath, databasePath, 1)
 	if err != nil {
 		isText, content := IsMiniTextFile(downloadPath)
 		if isText {
-			return "", fmt.Errorf("解压文件失败，" + err.Error() + "。检测到该文件内容为纯文本，内容为：" + content)
+			return "", fmt.Errorf("Failed to unzip the file," + err.Error() + "It is detected that the content of the file is plain text and the content is: " + content)
 		} else {
-			return "", fmt.Errorf("解压文件失败，" + err.Error())
+			return "", fmt.Errorf("Failed to unzip the file, " + err.Error())
 		}
 	}
 	return databasePath, nil

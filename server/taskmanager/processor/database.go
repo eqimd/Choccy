@@ -9,18 +9,18 @@ import (
 func CheckDatabaseUpdates(task *model.Task, project *model.Project) (string, string) {
 	codeQLDatabase, err := util.GetGithubDatabase(task.ProjectOwner, task.ProjectRepo, task.ProjectLanguage)
 	if err != nil {
-		panic("获取数据库失败：" + err.Error())
+		panic("Failed to obtain the database: " + err.Error())
 	}
 	SetProjectLatestVersion(project, codeQLDatabase.CommitOid, codeQLDatabase.CreatedAt)
 	return codeQLDatabase.CommitOid, codeQLDatabase.Url
 }
 
 func DownloadDatabase(task *model.Task, url string, commit string, databaseName string) string {
-	WriteTaskLog(task, "下载版本："+commit)
+	WriteTaskLog(task, "Download version: "+commit)
 	databasePath, err := util.DownloadGithubDatabase(url, databaseName)
 	if err != nil {
-		panic("数据库下载失败：" + err.Error())
+		panic("Database download failed: " + err.Error())
 	}
-	WriteTaskLog(task, "下载成功，路径："+databasePath)
+	WriteTaskLog(task, "The download was successful, the path: "+databasePath)
 	return databasePath
 }

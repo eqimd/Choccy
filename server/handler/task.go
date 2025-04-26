@@ -152,10 +152,10 @@ func AddTask(c *gin.Context) {
 	}
 
 	if strings.TrimSpace(task.Database) == "" {
-		panic(fmt.Sprintf("请选择数据库"))
+		panic(fmt.Sprintf("Please select database"))
 	}
 	if len(task.Suites) == 0 {
-		panic(fmt.Sprintf("请选择查询套件"))
+		panic(fmt.Sprintf("Please select the query kit"))
 	}
 	if strings.TrimSpace(task.Name) == "" {
 		task.Name = task.Database
@@ -213,16 +213,16 @@ func AddGithubBatchTasks(c *gin.Context) {
 	}
 
 	if strings.TrimSpace(task.Query) == "" {
-		panic(fmt.Sprintf("请设置查询语句"))
+		panic(fmt.Sprintf("Please set the query statement"))
 	}
 	if task.Number <= 0 {
-		panic(fmt.Sprintf("扫描数量不能小于1"))
+		panic(fmt.Sprintf("The number of scans cannot be less than 1"))
 	}
 	if strings.TrimSpace(task.Language) == "" {
-		panic(fmt.Sprintf("请设置语言"))
+		panic(fmt.Sprintf("Please set the language"))
 	}
 	if len(task.Suites) == 0 {
-		panic(fmt.Sprintf("请选择查询套件"))
+		panic(fmt.Sprintf("Please select the query kit"))
 	}
 
 	perPage := 100
@@ -238,7 +238,7 @@ func AddGithubBatchTasks(c *gin.Context) {
 
 		if len(githubRepositories) == 0 {
 			if task.Number+task.Offset > githubRepositorySearch.Total {
-				panic(fmt.Sprintf("偏移后扫描数量超过搜索到的总数，总数：%d，扫描：%d，偏移：%d", githubRepositorySearch.Total, task.Number, task.Offset))
+				panic(fmt.Sprintf("The number of scans after the offset exceeds the total number searched, the total number: %d, scan: %d, offset: %d", githubRepositorySearch.Total, task.Number, task.Offset))
 			}
 		}
 

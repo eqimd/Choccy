@@ -20,10 +20,10 @@ func CheckReleaseUpdates(task *model.Task, lastAnalyzeReleaseTag string, project
 
 	releases, err := util.GetGithubReleases(task.ProjectOwner, task.ProjectRepo)
 	if err != nil {
-		panic("获取项目Release失败：" + err.Error())
+		panic("Failed to obtain project release: " + err.Error())
 	}
 	if len(releases) == 0 {
-		panic("项目不存在Release")
+		panic("The project does not exist Release")
 	}
 
 	SetProjectLatestVersion(project, releases[0].TagName, releases[0].CreatedAt)
@@ -31,7 +31,7 @@ func CheckReleaseUpdates(task *model.Task, lastAnalyzeReleaseTag string, project
 	var tags []string
 	if strings.TrimSpace(lastAnalyzeReleaseTag) == "" {
 		releaseCount := setting.FirstReleaseCount
-		WriteTaskLog(task, fmt.Sprintf("项目第一次扫描Release，扫描最新的%d个版本，后续扫描将扫增量部分", releaseCount))
+		WriteTaskLog(task, fmt.Sprintf("Scan the release for the first time of the project, scan the latest %d Each version, subsequent scans will scan the incremental part", releaseCount))
 		for index, release := range releases {
 			if index >= releaseCount {
 				break
@@ -63,7 +63,7 @@ func DownloadRelease(task *model.Task, tag string) string {
 }
 
 func CreateDatabase(task *model.Task, source string, databaseName string) string {
-	WriteTaskLog(task, "开始构建数据库")
+	WriteTaskLog(task, "Start building the database")
 	stdout, stderr, err, databasePath := util.DatabaseCreate(
 		source,
 		task.ProjectLanguage,

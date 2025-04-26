@@ -24,7 +24,7 @@ func recoveryTask() {
 		//把任务状态置为失败
 		for _, runningAndQueuingTask := range runningAndQueuingTasks {
 			runningAndQueuingTask.Status = -1
-			runningAndQueuingTask.Logs += "任务执行中断\n"
+			runningAndQueuingTask.Logs += "Task execution interrupted\n"
 			result = database.DB.Save(runningAndQueuingTask)
 			if result.Error != nil {
 				panic(result.Error.Error())
@@ -41,7 +41,7 @@ func recoveryTask() {
 			//置空也会导致扫出来的结果关联不到对应的任务数据（现在结果通过id关联，不会通过AResults关联了）
 			//runningAndQueuingTask.AnalyzedVersions = []string{}
 			//runningAndQueuingTask.Results = []model.TaskResult{}
-			runningAndQueuingTask.Logs += "任务已恢复\n"
+			runningAndQueuingTask.Logs += "Task has been restored\n"
 			result = database.DB.Save(runningAndQueuingTask)
 			if result.Error != nil {
 				panic(result.Error.Error())

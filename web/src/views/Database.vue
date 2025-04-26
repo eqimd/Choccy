@@ -4,16 +4,16 @@
             :default-sort="{ prop: sort.name, order: sort.order }"
             table-layout="auto"
             v-loading="loading">
-    <el-table-column prop="Name" label="数据库" sortable="custom" />
-    <el-table-column prop="Extra.database_language" label="语言" sortable="custom"/>
-    <el-table-column prop="Extra.database_linesOfCode" label="代码行数" sortable="custom"/>
-    <el-table-column prop="Extra.database_cliVersion" label="CodeQL版本" sortable="custom"/>
+    <el-table-column prop="Name" label="Database" sortable="custom" />
+    <el-table-column prop="Extra.database_language" label="Language" sortable="custom"/>
+    <el-table-column prop="Extra.database_linesOfCode" label="LOC" sortable="custom"/>
+    <el-table-column prop="Extra.database_cliVersion" label="CodeQL version" sortable="custom"/>
 
-    <el-table-column prop="Extra.database_finalised" label="构建状态" sortable="custom">
+    <el-table-column prop="Extra.database_finalised" label="Build status" sortable="custom">
       <template #default="scope">
         <el-tooltip
             v-if="scope.row.Extra.database_finalised ==='true'"
-            content="构建完成"
+            content="Build complete"
             placement="top"
             :hide-after="10"
         >
@@ -22,7 +22,7 @@
 
         <el-tooltip
             v-if="scope.row.Extra.database_finalised ==='false'"
-            content="构建失败或正在构建中"
+            content="Failed to build or is under construction"
             placement="top"
             :hide-after="10"
         >
@@ -31,7 +31,7 @@
       </template>
     </el-table-column>
 
-    <el-table-column prop="ModTime" label="修改时间" sortable="custom"
+    <el-table-column prop="ModTime" label="Modification Time" sortable="custom"
                      :formatter="(row, col, value, index)=>timeFormatter(value)"
     />
 
@@ -40,7 +40,7 @@
         <el-button style="float: right" :icon="Plus" @click="createData" circle/>
       </template>
       <template #default="scope">
-        <el-popconfirm title="确认删除?" :hide-after="0" @confirm="deleteData(scope.row.Name)">
+        <el-popconfirm title="Confirm deletion?" :hide-after="0" @confirm="deleteData(scope.row.Name)">
           <template #reference>
             <el-button :icon="Delete" circle style="float: right;margin-left: 6px"/>
           </template>
@@ -60,7 +60,7 @@
       @current-change="fetchData"
   />
 
-  <el-dialog v-model="dialogFormVisible" title="上传数据库">
+  <el-dialog v-model="dialogFormVisible" title="Upload database">
     <el-upload
         ref="uploader"
         class="upload-demo"
@@ -111,13 +111,13 @@ const deleteData = (name) => {
   console.log("delete "+name)
   deleteDatabases(name).then(response => {
     fetchData();
-    ElMessage.success("删除成功")
+    ElMessage.success("Deleted succesfully")
   })
 }
 const dialogFormVisible = ref(false)
 const beforeUpload = (file) =>{
   if(!file.name.endsWith(".zip")){
-    ElMessage.error("只支持上传zip文件")
+    ElMessage.error("Only support uploading zip files")
     return false
   }
   return  true
@@ -126,7 +126,7 @@ const uploadSuccess = (response, uploadFile, uploadFiles) => {
   if (response.err) {
     ElMessage.error(response.err)
   }else {
-    ElMessage.success("数据库导入成功")
+    ElMessage.success("Database imported succesfully")
     fetchData()
   }
 }
@@ -135,7 +135,7 @@ const uploadError = (error, uploadFile, uploadFiles) => {
 }
 const uploadProgress = (evt, uploadFile, uploadFiles) => {
   if(evt.percent===100){
-    ElMessage.success("上传成功，正在解压，请稍后")
+    ElMessage.success("The upload was successful and it is being unzipped, please wait")
   }
 }
 

@@ -208,7 +208,7 @@ func Analyze(task *model.Task, databasePath, version string) (string, string) {
 		WriteTaskLog(task, "清理临时查询套件："+tmpSuitePath)
 		os.Remove(tmpSuitePath)
 	}()
-	WriteTaskLog(task, "开始分析")
+	WriteTaskLog(task, "Start analysis")
 
 	var resultFileName string
 	if strings.TrimSpace(task.ProjectOwner) != "" && strings.TrimSpace(task.ProjectRepo) != "" {
@@ -226,6 +226,6 @@ func Analyze(task *model.Task, databasePath, version string) (string, string) {
 		panic("分析失败：" + stderr)
 	}
 	//writeTaskLog(task, "扫描日志: "+stderr)
-	WriteTaskLog(task, "分析完成，分析结果: "+outputPath)
+	WriteTaskLog(task, "The analysis is completed, the analysis result: "+outputPath)
 	return resultFileName, outputPath
 }

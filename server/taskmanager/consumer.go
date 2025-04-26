@@ -43,7 +43,7 @@ func Consumer() {
 			}
 
 			if task.ProjectMode == 4 {
-				processor.WriteTaskLog(&task, "扫描模式为自动选择，将按照 原有数据库，Release，默认分支 的顺序选择")
+				processor.WriteTaskLog(&task, "The scanning mode is automatically selected, and will be selected in the order of the original database, Release, and default branches")
 				_, err := util.GetGithubDatabase(task.ProjectOwner, task.ProjectRepo, task.ProjectLanguage)
 				if err != nil {
 					_, err = util.GetGithubReleaseLatest(task.ProjectOwner, task.ProjectRepo)
@@ -61,13 +61,13 @@ func Consumer() {
 			if task.ProjectMode == 0 {
 				modelStr = "Release"
 			} else if task.ProjectMode == 1 {
-				modelStr = "原有数据库"
+				modelStr = "Original database"
 			} else if task.ProjectMode == 2 {
-				modelStr = "自定义"
+				modelStr = "Customize"
 			} else if task.ProjectMode == 3 {
-				modelStr = "默认分支"
+				modelStr = "Default branch"
 			} else {
-				modelStr = "未知"
+				modelStr = "Unknown"
 			}
 			processor.WriteTaskLog(&task,
 				fmt.Sprintf("开始任务，项目：%s，语言：%s， 模式：%s，查询套件：%s",
@@ -86,7 +86,7 @@ func Consumer() {
 					tags, latestRelease := processor.CheckReleaseUpdates(&task, project.LastAnalyzeReleaseTag, &project)
 					if len(tags) == 0 {
 						if !task.Manual {
-							processor.WriteTaskLog(&task, "当前没有新版本，结束任务")
+							processor.WriteTaskLog(&task, "There is currently no new version, end the task")
 							processor.SetTaskStatus(&task, 2) //任务完成
 							return
 						} else {
@@ -132,7 +132,7 @@ func Consumer() {
 						processor.SetTaskStage(&task, 2) // 编译数据库
 						databasePath = processor.CreateDatabase(&task, tagSourcePath, databaseName)
 					} else {
-						processor.WriteTaskLog(&task, fmt.Sprintf("数据库 %s 有效，跳过源码下载和数据库构建", databaseName))
+						processor.WriteTaskLog(&task, fmt.Sprintf("Database %s effective, skip source code download and database construction", databaseName))
 					}
 
 					//扫描
@@ -277,7 +277,7 @@ func Consumer() {
 					processor.SetTaskStage(&task, 2) // 编译数据库
 					databasePath = processor.CreateDatabase(&task, tagSourcePath, databaseName)
 				} else {
-					processor.WriteTaskLog(&task, fmt.Sprintf("数据库 %s 有效，跳过源码下载和数据库构建", databaseName))
+					processor.WriteTaskLog(&task, fmt.Sprintf("Database %s effective, skip source code download and database construction", databaseName))
 				}
 
 				//扫描
@@ -297,7 +297,7 @@ func Consumer() {
 				processor.CreateTaskResult(defaultBranchCommit, defaultBranchCommit, resultFileName, len(codeQLSarif.Results), task.ID)
 
 			} else {
-				panic("未知扫描模式：" + strconv.Itoa(task.ProjectMode))
+				panic("Unknown scan mode: " + strconv.Itoa(task.ProjectMode))
 			}
 
 			processor.SetTaskStatus(&task, 2) //任务完成

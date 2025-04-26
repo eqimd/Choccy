@@ -22,6 +22,6 @@ func DownloadCommit(task *model.Task, commit string) string {
 	if err != nil {
 		panic("下载失败：" + err.Error())
 	}
-	WriteTaskLog(task, "下载成功，路径："+tagSourcePath)
+	WriteTaskLog(task, "The download was successful, the path: "+tagSourcePath)
 	return tagSourcePath
 }

@@ -131,16 +131,16 @@
         </div>
       </template>
     </el-table-column>
-    <el-table-column prop="FileName" label="分析结果" sortable="custom"/>
-    <el-table-column prop="Task.ProjectName" label="项目"/>
-    <el-table-column prop="Version" label="扫描版本" width="104px">
+    <el-table-column prop="FileName" label="Analysis results" sortable="custom"/>
+    <el-table-column prop="Task.ProjectName" label="Project"/>
+    <el-table-column prop="Version" label="Scanned version" width="104px">
       <template #default="scope">
         {{
           scope.row.Task.ProjectMode === 0 ? scope.row.Version : commitVersionFormatter(scope.row.Version)
         }}
       </template>
     </el-table-column>
-    <el-table-column prop="Task.ProjectSuite" label="查询套件" width="100px">
+    <el-table-column prop="Task.ProjectSuite" label="Query kit" width="100px">
       <template #default="scope">
         <el-tag v-for="(item, index) in scope.row.Task.ProjectSuite"
                 :key="index"
@@ -150,26 +150,26 @@
         </el-tag>
       </template>
     </el-table-column>
-<!--    <el-table-column label="漏洞数量" width="104px">-->
+<!--    <el-table-column label="Number of vulnerabilities" width="104px">-->
 <!--      <template #default="scope">-->
 <!--        {{ scope.row.CodeQLSarif.Results.length }}-->
 <!--      </template>-->
 <!--    </el-table-column>-->
-    <el-table-column label="结果数量" prop="ResultCount" width="104px" sortable="custom">
+    <el-table-column label="Number of results" prop="ResultCount" width="104px" sortable="custom">
       <template #default="scope">
         {{ scope.row.ResultCount }}
       </template>
     </el-table-column>
-    <el-table-column width="162px" prop="CreatedAt" label="创建时间" sortable="custom"
+    <el-table-column width="162px" prop="CreatedAt" label="Creation time" sortable="custom"
                      :formatter="(row, col, value, index)=>timeFormatter(value)"/>
     <el-table-column
         width="66px"
-        label="查阅"
+        label="Check out"
         prop="IsRead"
         column-key="IsRead"
         :filters="[
-          { text: '已读', value: true },
-          { text: '未读', value: false },
+          { text: 'Read', value: true },
+          { text: 'Unread', value: false },
         ]"
         :filtered-value="filters.is_read">
       <template #default="scope">
@@ -184,7 +184,7 @@
     <el-table-column fixed="right" label="" width="94px">
       <template #header>
         <el-tooltip
-            content="全部已读"
+            content="All read"
             placement="left-start"
             :hide-after="10"
         >
@@ -194,7 +194,7 @@
       <template #default="scope">
         <el-tooltip
             v-if="scope.row.IsRead"
-            content="标记为未读"
+            content="Marked as unread"
             placement="left-start"
             :hide-after="10"
         >
@@ -202,13 +202,13 @@
         </el-tooltip>
         <el-tooltip
             v-if="!scope.row.IsRead"
-            content="标记为已读"
+            content="Marked as read"
             placement="left-start"
             :hide-after="10"
         >
           <el-button :icon="FolderOpened" circle @click="setResultIsRead(scope.row.ID,true)"/>
         </el-tooltip>
-        <el-popconfirm title="确认删除?" :hide-after="0" @confirm="deleteData(scope.row.ID)">
+        <el-popconfirm title="Confirm deletion?" :hide-after="0" @confirm="deleteData(scope.row.ID)">
           <template #reference>
             <el-button :icon="Delete" circle style="margin-left: 6px"/>
           </template>
@@ -485,7 +485,7 @@ const filterChange = (f) => {
 const deleteData = (ID) => {
   deleteResult(ID).then(response => {
     fetchData();
-    ElMessage.success("删除成功")
+    ElMessage.success("Deleted successfully")
     emit("refresh")
   })
 }
