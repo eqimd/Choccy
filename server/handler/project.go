@@ -107,7 +107,7 @@ func GetProjects(c *gin.Context) {
 					}
 				} else {
 					projects[i].LatestVersion = "[Error]"
-					projects[i].LatestVersionErrorInfo = "未知扫描模式"
+					projects[i].LatestVersionErrorInfo = "Unknown scan mode"
 				}
 				projects[i].LatestVersionCheckTime = time.Now()
 				projects[i].LatestVersionCheckMode = projects[i].Mode
