@@ -141,24 +141,22 @@ On the 'Database' page, click the plus icon in the upper right corner to package
 
 (The upload function does not use block transmission, so the available memory of the server is required to be greater than the file size)
 
-![image-20231209180915036](./README/image-20231209180915036.png)
-
-![image-20231209181044428](./README/image-20231209181044428.png)
+![image-upload-db](./README/image-upload-db.png)
 
 On the 'TASK' page, click the plus icon in the upper right corner, and select the database and query suite. The project name is the same as the database name by default.
 
-![image-20231209175754439](./README/image-20231209175754439.png)
+![image-custom-db](./README/image-custom-db.png)
 
 
 ### Select GitHub projects in bulk for scanning
 
 On the 'task' page, select the plus sign icon in the upper right corner and click 'Batch Create from GitHub`
 
-![image-20231221165209187](./README/image-20231221165209187.png)
+![image-batch-github](./README/image-batch-github.png)
 
 The 'search statement' is the retrieval of the warehouse. The syntax reference is: https://docs.github.com/en/rest/search/search?apiVersion=2022-11-28#search-repositories
 
 'Scan range' refers to which part is taken out for scanning after being sorted in a certain order.In the screenshot below, it will be sorted in reverse order by the number of stars, and the 11th and 12th warehouses will be scanned.
 
-![image-20231221165319202](./README/image-20231221165319202.png)
+![image-batch-fields](./README/image-batch-fields.png)
 
