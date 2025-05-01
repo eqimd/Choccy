@@ -26,8 +26,8 @@ var examples embed.FS
 
 func run() {
 	//获取命令行参数，只有addr和token
-	addr := flag.String("addr", "0.0.0.0:80", "监听地址和端口")
-	token := flag.String("token", "", "系统Token")
+	addr := flag.String("addr", "0.0.0.0:80", "Listening address and port")
+	token := flag.String("token", "", "System Token")
 	flag.Parse()
 
 	//初始化数据目录，数据库，环境变量
