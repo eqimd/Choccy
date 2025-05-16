@@ -193,6 +193,30 @@ functionClass = Class.forName(className);
 
 PoC находится по ссылке https://github.com/Warxim/CVE-2022-41852/tree/main
 
+PoC запускает спринг-сервер с двумя ручками:
+```
+/vulnerable-example?path=[path]
+/secure-example?path=[path]
+```
+
+Первая ручка уязвимая, вторая нет. В пути первой ручки нужно передать какую-нибудь функцию и она будет вызвана, например если запустить сервер из PoC на порту 8080 и отправить запрос
+```
+curl http://localhost:8080/vulnerable-example?path=java.lang.System.exit(42)
+```
+то запущенный сервер упадет
+
+![](README/poc1_screen1.png)
+![](README/poc1_screen2.png)
+
+Если перезапустить сервер и отправить запрос
+```
+curl http://localhost:8080/secure-example?path=java.lang.System.exit(42)
+```
+
+То сервер не падает и отвечает (500 т.к. такой функции нету)
+
+![](README/poc1_screen3.png)
+
 Коммита с исправлением по сути нету т.к. эту CVE не признали уязвимостью. Чтобы злоумышленник не мог исполнить произвольный код, нужно вызвать `pathContext.setFunctions(new FunctionLibrary());` и тогда из контекста нельзя будет достать произвольную функцию.
 
 ### CVE: CVE-2023-46442
@@ -207,6 +231,16 @@ CWE-835
 
 PoC лежит здесь https://github.com/JAckLosingHeart/CVE-2023-46442_POC/tree/main
 
+Его суть в том чтобы отправить функция `retrieveActiveBody` вызвалась с классом `Build$Builder.class` который вызовет бесконечное выполнение (и в итоге выест всю оперативную память сервера)
+
+![](README/poc2_screen1.png)
+
+т.е. видно что при запуске он подвисает
+
+![](README/poc2_screen2.png)
+
+и в итоге приходит к GC overhead limit
+
 ### CVE: CVE-2018-12533
 
 Package: org.richfaces:richfaces-core
@@ -216,6 +250,13 @@ CWE-917
 Данная уязвимость опасна тем что позволяет произвести инъекцию кода и запустить на сервере произвольный Java код.
 
 PoC https://github.com/llamaonsecurity/CVE-2018-12533/blob/master/src/main/java/cve_2018_12533/Main.java
+
+Суть в нем следующая: запускается докер-контейнер с сервером richfaces-jboss
+
+```
+docker build -t richfaces-jboss .
+docker run -p 8081:8080 richfaces-jboss
+```
 
 Нету исходников со старым кодом, единственное что нашлось https://github.com/nuxeo/richfaces-3.3 опять не собирается база codeql. Из-за этого не могу найти sink и паблик метод.
 
