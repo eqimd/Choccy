@@ -134,6 +134,8 @@ Wait for the scan completion. You should see next
 Go to "Analysis results" tab and explore the results
 ![image-results](./README/image-results.png)
 
+The problem with the package is that they do not filter paths, so `/../` is possible. Fix is presented here https://github.com/pf4j/pf4j/pull/538/files so now they check that path start with canonical path `if (!fileCanonicalPath.startsWith(destinationCanonicalPath))`
+
 
 ### Upload the CodeQL database for scanning
 
